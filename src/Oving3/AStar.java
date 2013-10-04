@@ -44,8 +44,13 @@ public class AStar{
 				if (closed.contains(child) && tentative_f >= child.f) {
 					continue;
 				}
-				if (!closed.contains(child) || tentative_f < child.f) {
-
+				if (!open.contains(child) || tentative_f < child.f) {
+				    path.put(child, current);
+					child.g = tentative_g;
+					child.f = tentative_f;
+					if (!open.contains(child)) {
+						open.add(child);
+					}
 				}
 			}
 		}
