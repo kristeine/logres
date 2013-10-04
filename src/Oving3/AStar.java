@@ -37,8 +37,7 @@ public class AStar{
 			}
 			open.remove(current); closed.add(current);
 
-			for (int i = 0; i < current.getChildren().size(); i++) {
-				SearchNode child = current.getChildren().get(i);
+			for (SearchNode child : current.getChildren()) {
 				int tentative_g = current.g + 1;
 				int tentative_f = current.f + heuristicCostEstimate(child, goal);
 				if (closed.contains(child) && tentative_f >= child.f) {
