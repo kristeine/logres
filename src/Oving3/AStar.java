@@ -10,16 +10,17 @@ import java.util.HashMap;
  * Time: 11:07
  * To change this template use File | Settings | File Templates.
  */
-public class AStar implements Runnable{
+public class AStar{
 	private ArrayList<SearchNode> closed;
 	private ArrayList<SearchNode> open;
 	private HashMap<SearchNode, SearchNode> path;
 
-	public  void run() {
+	public  static void main(String[] args) {
+		AStar aStar = new AStar();
+
 		SearchNode start = new SearchNode();
 		SearchNode goal = new SearchNode();
-
-		find(start, goal);
+		aStar.find(start, goal);
 	}
 
 	public String find(SearchNode start, SearchNode goal){
