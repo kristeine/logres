@@ -11,9 +11,10 @@ import java.util.ArrayList;
  */
 public class SearchNode {
 	public State state;
-	public int cost_arrival;
-	public int cost_toGoal;
-	public int cost_total;
+	public int g; //cost of arrival
+	public int h; //estimated cost to goal
+	public int f; //g+h, estimated total cost to goal
+	private int id;
 	private boolean open;
 	private SearchNode parent;
 	private ArrayList<SearchNode> children = new ArrayList<SearchNode>();
@@ -21,5 +22,13 @@ public class SearchNode {
 	public String getStatus() {
 		if (open) {return "open";}
 		else {return "closed";}
+	}
+
+	public SearchNode getParent() {
+		return parent;
+	}
+
+	public ArrayList<SearchNode> getChildren(){
+		return children;
 	}
 }
