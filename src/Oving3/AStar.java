@@ -33,11 +33,13 @@ public class AStar{
 		while (!open.isEmpty()) {
 			SearchNode current = open.get(0); //assume open sorted on f
 			if (current == goal) {
+				System.out.println("Found the goal");
 				return path(path, goal);
 			}
 			open.remove(current); closed.add(current);
 
 			for (SearchNode child : current.getChildren()) {
+				System.out.println("Checking child of: " + current.color);
 				int tentative_g = current.g + 1;
 				int tentative_f = current.f + heuristicCostEstimate(child, goal);
 				if (closed.contains(child) && tentative_f >= child.f) {
@@ -63,7 +65,7 @@ public class AStar{
 	public String path(HashMap<SearchNode, SearchNode> currentPath, SearchNode goal){
 		if (currentPath.containsKey(goal)) {
 			String parentPath = path(currentPath, currentPath.get(goal));
-			return parentPath + goal.toString();
+			return parentPath + ", " + goal.toString();
 		}
 		else {
 			return goal.toString();

@@ -18,6 +18,17 @@ public class SearchNode {
 	private SearchNode parent;
 	private ArrayList<SearchNode> children = new ArrayList<SearchNode>();
 	public String color;
+	private int position;
+
+	public SearchNode() {}
+
+	public SearchNode(String color) {
+		this.color = color;
+	}
+
+	public SearchNode(int pos) {
+		position = pos;
+	}
 
 	public String getStatus() {
 		if (open) {return "open";}
@@ -30,5 +41,18 @@ public class SearchNode {
 
 	public ArrayList<SearchNode> getChildren(){
 		return children;
+	}
+
+	public void addChild(SearchNode sn) {
+		children.add(sn);
+	}
+
+	public String toString() {
+		return color;
+	}
+
+	public void generateChildren(){
+		//sjekke brettet
+		//for hvert mulige trekk for denne noden: opprett barnenode
 	}
 }
