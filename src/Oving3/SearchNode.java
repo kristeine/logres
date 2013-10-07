@@ -44,12 +44,13 @@ public class SearchNode {
 	public int generateChildren(){
 		int possibleMoves = 0;
 		int blankPosition = 0;
-		for (int i = 0; i < board.size(); i++) {
+		int boardSize = board.size();
+		for (int i = 0; i < boardSize; i++) {
 			if (board.get(i) == "") { //find empty space
-				if (i == 0 || i == board.size()-1) {   //edge position
+				if (i == 0 || i == boardSize-1) {   //edge position
 					possibleMoves = 2;
 				}
-				else if (i == 1 || i == board.size()-2) { //close to edge
+				else if (i == 1 || i == boardSize-2) { //close to edge
 					possibleMoves =  3;
 				}
 				else {
@@ -60,17 +61,38 @@ public class SearchNode {
 			}
 		}
 		if (blankPosition == 0) {
-			children.add(newChild(board, 0, 1));
-			children.add(newChild(board, 0, 2));
-
+			children.add(newChild(board, blankPosition, 1));
+			children.add(newChild(board, blankPosition, 2));
 		}
+		else if (blankPosition == 1) {
+			children.add(newChild(board, blankPosition, 0));
+			children.add(newChild(board, blankPosition, 2));
+			children.add(newChild(board, blankPosition, 3));
+		}
+		else if (blankPosition == boardSize-1) {
+			children.add(newChild(board, blankPosition, blankPosition-1));
+			children.add(newChild(board, blankPosition, blankPosition-2));
+		}
+		else if (blankPosition == boardSize-2) {
+			children.add(newChild(board, blankPosition, boardSize-1));
+			children.add(newChild(board, blankPosition, blankPosition-1));
+			children.add(newChild(board, blankPosition, blankPosition-2))
+		}
+
+		else if (blankPosition >= 2 && blankPosition <= boardSize-3) {
+			children.add(newChild(board, blankPosition, blankPosition-2));
+			children.add(newChild(board, blankPosition, blankPosition-1));
+			children.add(newChild(board, blankPosition, blankPosition+1));
+			children.add(newChild(board, blankPosition, blankPosition+2));
+		}
+
 		//sjekke brettet
 		//for hvert mulige trekk for denne noden: opprett barnenode med nytt board
 		//returner antall opprettede noder
 		return possibleMoves;
 	}
 
-	private SearchNode newChild(ArrayList<String> board, int blankPosition, int valuePosition) {
+	private SearchNode newChild(ArrayList<String> board, int blankPosition, int valuePosition) {   //return child node with new board values
 		ArrayList<String> newBoard = board;
 		newBoard.set(blankPosition, newBoard.get(valuePosition));
 		newBoard.set(valuePosition, "");
