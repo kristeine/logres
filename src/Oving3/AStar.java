@@ -105,10 +105,10 @@ public class AStar{
 	public String path(HashMap<SearchNode, SearchNode> currentPath, SearchNode goal){
 		if (currentPath.containsKey(goal)) {
 			String parentPath = path(currentPath, currentPath.get(goal));
-			return parentPath + ", " + goal.toString();
+			return parentPath + "\n" + goal.getBoard();
 		}
 		else {
-			return goal.toString();
+			return "\n" + goal.getBoard().toString();
 		}
 	}
 
