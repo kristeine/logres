@@ -76,7 +76,7 @@ public class SearchNode {
 		else if (blankPosition == boardSize-2) {
 			children.add(newChild(board, blankPosition, boardSize-1));
 			children.add(newChild(board, blankPosition, blankPosition-1));
-			children.add(newChild(board, blankPosition, blankPosition-2))
+			children.add(newChild(board, blankPosition, blankPosition-2));
 		}
 
 		else if (blankPosition >= 2 && blankPosition <= boardSize-3) {
