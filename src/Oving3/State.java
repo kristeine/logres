@@ -10,4 +10,11 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class State {
+	private int number = 0;
+
+	public int getNumber() {
+		int previousNumber = number;
+		number++;
+		return previousNumber;
+	}
 }

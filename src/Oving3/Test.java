@@ -1,5 +1,7 @@
 package Oving3;
 
+import java.util.ArrayList;
+
 /**
  * Created with IntelliJ IDEA.
  * User: kristine
@@ -16,13 +18,18 @@ public class Test {
 	}
 
 	public void run() {
+		ArrayList<String> board = new ArrayList<String>();
+		board.add("grey"); board.add("grey"); board.add("grey"); board.add("");
+		board.add("red"); board.add("red"); board.add("red");
+		//board.add("grey");   board.add("grey"); board.add("grey"); board.add("");
+		topNode = new SearchNode(board);
+		topNode.name = "blue";
+		topNode.number = 0;
 		topNode.g = 0;
-		SearchNode a = new SearchNode("blue"), b = new SearchNode("green"), c = new SearchNode("yellow");
-		topNode.addChild(a);
-		topNode.addChild(b);
-		topNode.addChild(c);
+		//System.out.println("Board: " + board);
+		//topNode.generateChildren();
 		AStar aStar = new AStar();
-		System.out.println("Path: " + aStar.find(topNode, c));
+		System.out.println("Path: " + aStar.find(topNode));
 		System.out.println("Number of generated nodes: " + aStar.getGeneratedNodes());
 	}
 }

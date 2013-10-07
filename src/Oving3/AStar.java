@@ -11,7 +11,7 @@ import java.util.HashMap;
  * To change this template use File | Settings | File Templates.
  */
 public class AStar{
-	private ArrayList<SearchNode> closed;
+	private ArrayList<ArrayList<String>> closed;
 	private ArrayList<SearchNode> open;
 	private HashMap<SearchNode, SearchNode> path;
 	private ArrayList<String> goalBoard = new ArrayList<String>();
@@ -22,20 +22,25 @@ public class AStar{
 
 		SearchNode start = new SearchNode();
 		SearchNode goal = new SearchNode();
-		aStar.find(start, goal);
+		aStar.find(start);
 	}
 
-	public String find(SearchNode start, SearchNode goal){
+	public String find(SearchNode start){
 		goalBoard.add("red"); goalBoard.add("red"); goalBoard.add("red"); goalBoard.add("");
 		goalBoard.add("grey"); goalBoard.add("grey"); goalBoard.add("grey");
+		//goalBoard.add("red"); goalBoard.add(""); goalBoard.add("red"); goalBoard.add("red");
 		generatedNodes = 0;
-		closed = new ArrayList<SearchNode>();
+		closed = new ArrayList<ArrayList<String>>();
 		open = new ArrayList<SearchNode>(); open.add(start);
 		path = new HashMap<SearchNode, SearchNode>();
-		start.g = 0;
-		start.f = start.g + heuristicCostEstimate(start, goal);
+		start.f = start.g + heuristicCostEstimate(start, goalBoard);
 
 		while (!open.isEmpty()) {
+			System.out.println("Open size: " + open.size());
+			System.out.println("Closed size: " + closed.size());
+			/*if (open.size() > 110) {
+				return "Error: too many open nodes";
+			} */
 			int tentative_low = 6; SearchNode current = open.get(0);
 			for (SearchNode sn : open) {   //find the node with lowest f value
 				if (sn.f < tentative_low) {
@@ -43,19 +48,24 @@ public class AStar{
 				}
 			}
 
+			System.out.println("Lowest f-score: " + current.f);
+			System.out.println("Current board: " + current.getBoard());
+
 			//SearchNode current = open.get(0); //assume open sorted on f
-			if (current.getBoard() == goalBoard) {   //check if node is goal
+			if (current.f == 0) {   //check if node is goal
 				System.out.println("Found the goal");
-				return path(path, goal);
+				return path(path, current);
 			}
-			open.remove(current); closed.add(current);
+			open.remove(current); closed.add(current.getBoard());
 			generatedNodes += current.generateChildren();
 
 			for (SearchNode child : current.getChildren()) {
-				System.out.println("Checking child of: " + current.color);
+				//System.out.println("Checking child of: " + current.number);
 				int tentative_g = current.g + 1;
-				int tentative_f = current.f + heuristicCostEstimate(child, goal);
-				if (closed.contains(child) && tentative_f >= child.f) {
+				//int tentative_f = current.g + heuristicCostEstimate(child, goalBoard);
+				int tentative_f = heuristicCostEstimate(child, goalBoard);
+
+				if (closed.contains(child.getBoard())) {
 					continue;
 				}
 				if (!open.contains(child) || tentative_f < child.f) {
@@ -71,8 +81,25 @@ public class AStar{
 		return "Error";
 	}
 
-	public int heuristicCostEstimate(SearchNode start, SearchNode goal) {
-		return 0; //bredde først
+	public int heuristicCostEstimate(SearchNode start, ArrayList<String> goalBoard) {
+		int middleIndex = (int) Math.floor(goalBoard.size()/2);
+		ArrayList<String> currentBoard = start.getBoard();
+		int result = 0;
+		/*for (int i = 0; i < goalBoard.size(); i++) {
+			if (currentBoard.get(i) != goalBoard.get(i) && currentBoard.get(i)!="") {
+				result +=1;
+			} //number of misplaced pieces
+		}*/
+		for (String s : currentBoard) {
+			int location = currentBoard.indexOf(s);
+			if (s == "grey" && location <= middleIndex) {
+				result += 1 + (middleIndex-location);
+			}
+			else if (s == "red" && location >= middleIndex) {
+				result += 1 + (location-middleIndex);
+			}
+		}
+		return result;
 	}
 
 	public String path(HashMap<SearchNode, SearchNode> currentPath, SearchNode goal){

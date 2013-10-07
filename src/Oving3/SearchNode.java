@@ -10,19 +10,18 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class SearchNode {
-	public State state;
+	public State state = new State();
 	public int g; //cost of arrival
-	public int h; //estimated cost to goal
 	public int f; //g+h, estimated total cost to goal
 	private ArrayList<SearchNode> children = new ArrayList<SearchNode>();
-	public String color;
+	public String name;
+	public int number;
 	private ArrayList<String> board = new ArrayList<String>();
-	private int position;
 
 	public SearchNode() {}
 
 	public SearchNode(String color) {
-		this.color = color;
+		this.name = color;
 	}
 
 	public SearchNode(ArrayList<String> board) {
@@ -33,53 +32,46 @@ public class SearchNode {
 		return children;
 	}
 
-	public void addChild(SearchNode sn) {
-		children.add(sn);
-	}
-
 	public String toString() {
-		return color;
+		return name;
 	}
 
 	public int generateChildren(){
 		int possibleMoves = 0;
 		int blankPosition = 0;
 		int boardSize = board.size();
-		for (int i = 0; i < boardSize; i++) {
-			if (board.get(i) == "") { //find empty space
-				if (i == 0 || i == boardSize-1) {   //edge position
-					possibleMoves = 2;
-				}
-				else if (i == 1 || i == boardSize-2) { //close to edge
-					possibleMoves =  3;
-				}
-				else {
-					possibleMoves =  4;
-				}
-				blankPosition = i;
+		for (String s : board) {
+			if (s == "") { //find empty space
+				blankPosition = board.indexOf(s);
+				//System.out.println("Blank position: " + blankPosition);
 				break;
 			}
 		}
 		if (blankPosition == 0) {
+			possibleMoves = 2;
 			children.add(newChild(board, blankPosition, 1));
 			children.add(newChild(board, blankPosition, 2));
 		}
 		else if (blankPosition == 1) {
+			possibleMoves =  3;
 			children.add(newChild(board, blankPosition, 0));
 			children.add(newChild(board, blankPosition, 2));
 			children.add(newChild(board, blankPosition, 3));
 		}
 		else if (blankPosition == boardSize-1) {
+			possibleMoves = 2;
 			children.add(newChild(board, blankPosition, blankPosition-1));
 			children.add(newChild(board, blankPosition, blankPosition-2));
 		}
 		else if (blankPosition == boardSize-2) {
+			possibleMoves =  3;
 			children.add(newChild(board, blankPosition, boardSize-1));
 			children.add(newChild(board, blankPosition, blankPosition-1));
 			children.add(newChild(board, blankPosition, blankPosition-2));
 		}
 
 		else if (blankPosition >= 2 && blankPosition <= boardSize-3) {
+			possibleMoves =  4;
 			children.add(newChild(board, blankPosition, blankPosition-2));
 			children.add(newChild(board, blankPosition, blankPosition-1));
 			children.add(newChild(board, blankPosition, blankPosition+1));
@@ -93,10 +85,16 @@ public class SearchNode {
 	}
 
 	private SearchNode newChild(ArrayList<String> board, int blankPosition, int valuePosition) {   //return child node with new board values
-		ArrayList<String> newBoard = board;
+		ArrayList<String> newBoard = new ArrayList<String>(board.size());
+		for (String s : board) {
+			newBoard.add(s);
+		}
 		newBoard.set(blankPosition, newBoard.get(valuePosition));
 		newBoard.set(valuePosition, "");
 		SearchNode child = new SearchNode(newBoard);
+		child.name = this.name + "1";
+		child.number = this.number + 1;
+		//System.out.println("Board of child " + child.number + ": " + child.getBoard());
 		return child;
 	}
 
