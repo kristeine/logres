@@ -42,8 +42,8 @@ public class Test {
 		/*board.add("grey"); board.add("red"); board.add("red");board.add("red");board.add("grey"); board.add("red");
 		board.add("");
 		board.add("red");board.add("red");board.add("grey"); board.add("grey");board.add("grey");board.add("grey");*/
-		board = createBoard(12, false);
-		goalBoard = createBoard(12, true);
+		board = createBoard(15, false);
+		goalBoard = createBoard(15, true);
 
 
 		topNode = new SearchNode(board);
@@ -53,7 +53,6 @@ public class Test {
 
 
 		AStar aStar = new AStar(goalBoard);
-		//System.out.println("Heuristic: " + aStar.heuristicCostEstimate(topNode, goalBoard));
 		System.out.println("Path: " + aStar.find(topNode));
 		System.out.println("Number of generated nodes: " + aStar.getGeneratedNodes());
 	}
