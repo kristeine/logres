@@ -77,7 +77,7 @@ public class SearchNode {
 			children.add(newChild(board, blankPosition, blankPosition+1));
 			children.add(newChild(board, blankPosition, blankPosition+2));
 		}
-
+		System.out.println("Making " + possibleMoves + " children");
 		//sjekke brettet
 		//for hvert mulige trekk for denne noden: opprett barnenode med nytt board
 		//returner antall opprettede noder
@@ -100,5 +100,14 @@ public class SearchNode {
 
 	public ArrayList<String> getBoard() {
 		return board;
+	}
+	@Override
+	public boolean equals(Object o) {
+		SearchNode sn = (SearchNode) o;
+		boolean result = false;
+		if (sn.getBoard().equals(this.getBoard())) {
+			result = true;
+		}
+		return result;
 	}
 }
