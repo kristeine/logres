@@ -17,21 +17,43 @@ public class Test {
 		test.run();
 	}
 
-	public void run() {
+	private ArrayList<String> createBoard(int numberOfEachColor, boolean goal) {
 		ArrayList<String> board = new ArrayList<String>();
-		for (int i = 0; i < 3; i++) {
-			board.add("grey");
+		String color1 = "grey";
+		String color2 = "red";
+		if (goal) {
+			color1 = "red";
+			color2 = "grey";
+		}
+		for (int i = 0; i < numberOfEachColor; i++) {
+			board.add(color1);
 		}
 		board.add("");
-		for (int i = 0; i < 3; i++) {
-			board.add("red");
+		for (int i = 0; i < numberOfEachColor; i++) {
+			board.add(color2);
 		}
-		//board.add("grey");   board.add("grey"); board.add("grey"); board.add("");
+		return board;
+	}
+
+	public void run() {
+		ArrayList<String> board;
+		ArrayList<String> goalBoard;
+
+		/*board.add("grey"); board.add("red"); board.add("red");board.add("red");board.add("grey"); board.add("red");
+		board.add("");
+		board.add("red");board.add("red");board.add("grey"); board.add("grey");board.add("grey");board.add("grey");*/
+		board = createBoard(12, false);
+		goalBoard = createBoard(12, true);
+
+
 		topNode = new SearchNode(board);
 		topNode.name = "blue";
 		topNode.number = 0;
 		topNode.g = 0;
-		AStar aStar = new AStar();
+
+
+		AStar aStar = new AStar(goalBoard);
+		//System.out.println("Heuristic: " + aStar.heuristicCostEstimate(topNode, goalBoard));
 		System.out.println("Path: " + aStar.find(topNode));
 		System.out.println("Number of generated nodes: " + aStar.getGeneratedNodes());
 	}

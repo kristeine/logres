@@ -10,15 +10,12 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class SearchNode {
-	public State state = new State();
 	public int g; //cost of arrival
 	public int f; //g+h, estimated total cost to goal
 	private ArrayList<SearchNode> children = new ArrayList<SearchNode>();
 	public String name;
 	public int number;
 	private ArrayList<String> board = new ArrayList<String>();
-
-	public SearchNode() {}
 
 	public SearchNode(String color) {
 		this.name = color;
@@ -77,7 +74,7 @@ public class SearchNode {
 			children.add(newChild(board, blankPosition, blankPosition+1));
 			children.add(newChild(board, blankPosition, blankPosition+2));
 		}
-		System.out.println("Making " + possibleMoves + " children");
+		//System.out.println("Making " + possibleMoves + " children");
 		//sjekke brettet
 		//for hvert mulige trekk for denne noden: opprett barnenode med nytt board
 		//returner antall opprettede noder

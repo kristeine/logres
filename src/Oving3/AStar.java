@@ -16,23 +16,14 @@ public class AStar{
 	private HashMap<SearchNode, SearchNode> path;
 	private ArrayList<String> goalBoard = new ArrayList<String>();
 	private int generatedNodes;
+	private int pathLength = 0;
 
-	public  static void main(String[] args) {
-		AStar aStar = new AStar();
 
-		SearchNode start = new SearchNode();
-		SearchNode goal = new SearchNode();
-		aStar.find(start);
+	public AStar(ArrayList<String> goalBoard) {
+		this.goalBoard = goalBoard;
 	}
 
 	public String find(SearchNode start){
-		for (int i = 0; i < 3; i++) {
-			goalBoard.add("red");
-		}
-		goalBoard.add("");
-		for (int i = 0; i < 3; i++) {
-			goalBoard.add("grey");
-		}
 		generatedNodes = 0;
 		closed = new ArrayList<SearchNode>();
 		open = new ArrayList<SearchNode>(); open.add(start);
@@ -41,8 +32,11 @@ public class AStar{
 		//start.f = 5000 - heuristicCostEstimate(start, goalBoard);
 
 		while (!open.isEmpty()) {
-			System.out.println("Open size: " + open.size());
-			System.out.println("Closed size: " + closed.size());
+			//System.out.println("Open size: " + open.size());
+			//System.out.println("Closed size: " + closed.size());
+			if (closed.size() % 1000 == 0) {
+				System.out.println("Closed size: " + closed.size());
+			}
 			/*if (open.size() > 110) {
 				return "Error: too many open nodes";
 			} */
@@ -60,8 +54,8 @@ public class AStar{
 				open.remove(sn);
 			}
 
-			System.out.println("Lowest f-score: " + current.f);
-			System.out.println("Current board: " + current.getBoard());
+			//System.out.println("Lowest f-score: " + current.f + "\n");
+			//System.out.println("Current board: " + current.getBoard());
 
 			//SearchNode current = open.get(0); //assume open sorted on f
 			if (current.getBoard().equals(goalBoard)) {   //check if node is goal
@@ -74,7 +68,7 @@ public class AStar{
 			}
 
 			for (SearchNode child : current.getChildren()) {
-				System.out.println("Traversing children");
+				//System.out.println("Traversing children");
 				//System.out.println("Checking child of: " + current.number);
 				int tentative_g = current.g + 1;
 				//int tentative_f = current.g + heuristicCostEstimate(child, goalBoard);
@@ -82,12 +76,12 @@ public class AStar{
 				//int tentative_f = current.f - heuristicCostEstimate(child, goalBoard);
 
 				if (closed.contains(child)) {
-					System.out.println("Duplicate child");
+					//System.out.println("Duplicate child");
 					continue;
 				}
-				if (!open.contains(child)) {
+				if (!open.contains(child) && tentative_f < current.f + 2) {
 					generatedNodes++;
-					System.out.println("Child not yet checked");
+					//System.out.println("Child not yet checked");
 					path.put(child, current);
 					child.g = tentative_g;
 					child.f = tentative_f;
@@ -108,13 +102,16 @@ public class AStar{
 				result +=1;
 			} //number of misplaced pieces
 		}*/
-		for (String s : currentBoard) {
-			int location = currentBoard.indexOf(s);
+		for (int i = 0; i < goalBoard.size(); i++) {
+			String s = currentBoard.get(i);
+			int location = i;
 			if (s == "grey" && location <= middleIndex) {
-				result += 1 + (middleIndex-location);
+				result += 1;
+				result += 1.5*(middleIndex-location);
 			}
 			else if (s == "red" && location >= middleIndex) {
-				result += 1 + (location-middleIndex);
+				result += 1;
+				result += 1.5*(location-middleIndex);
 			}
 		}
 		return result;
@@ -125,10 +122,11 @@ public class AStar{
 	public String path(HashMap<SearchNode, SearchNode> currentPath, SearchNode goal){
 		if (currentPath.containsKey(goal)) {
 			String parentPath = path(currentPath, currentPath.get(goal));
+			pathLength += 1;
 			return parentPath + "\n" + goal.getBoard();
 		}
 		else {
-			return "\n" + goal.getBoard().toString();
+			return pathLength + "\n" + goal.getBoard().toString();
 		}
 	}
 
