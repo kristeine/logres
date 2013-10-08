@@ -36,23 +36,21 @@ public class Test {
 	}
 
 	public void run() {
+		//Board setup
 		ArrayList<String> board;
 		ArrayList<String> goalBoard;
 
-		/*board.add("grey"); board.add("red"); board.add("red");board.add("red");board.add("grey"); board.add("red");
-		board.add("");
-		board.add("red");board.add("red");board.add("grey"); board.add("grey");board.add("grey");board.add("grey");*/
-		board = createBoard(15, false);
-		goalBoard = createBoard(15, true);
+		board = createBoard(3, false);
+		goalBoard = createBoard(3, true);
 
-
+		//Top node setup
 		topNode = new SearchNode(board);
 		topNode.name = "blue";
 		topNode.number = 0;
 		topNode.g = 0;
 
-
 		AStar aStar = new AStar(goalBoard);
+		//Print statistics
 		System.out.println("Path: " + aStar.find(topNode));
 		System.out.println("Number of generated nodes: " + aStar.getGeneratedNodes());
 	}

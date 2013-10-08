@@ -16,7 +16,6 @@ public class AStar{
 	private HashMap<SearchNode, SearchNode> path;
 	private ArrayList<String> goalBoard = new ArrayList<String>();
 	private int generatedNodes;
-	private int pathLength = 0;
 
 
 	public AStar(ArrayList<String> goalBoard) { //Initialize with a goal
@@ -25,7 +24,7 @@ public class AStar{
 
 	public String find(SearchNode start){
 		generatedNodes = 0;
-		closed = new ArrayList<SearchNode>();
+		closed = new ArrayList<SearchNode>();   //Make sure the arrays are empty
 		open = new ArrayList<SearchNode>(); open.add(start);
 		path = new HashMap<SearchNode, SearchNode>();
 		start.f = heuristicCostEstimate(start, goalBoard);
@@ -35,27 +34,28 @@ public class AStar{
 				System.out.println("Closed size: " + closed.size());
 			}
 
-			SearchNode current = open.get(0); //open sorted on f
+			SearchNode current = open.get(0); //Start with first node
 
 			ArrayList<SearchNode> duplicates = new ArrayList<SearchNode>();
 			for (SearchNode sn : open) {
 				if (closed.contains(sn)) {  //find duplicates
 					duplicates.add(sn);
 				}
-				else if (sn.f < current.f) {   //find lowest f
+				else if (sn.f < current.f) {   //Check if other nodes are "better" than current node
 					current = sn;
 				}
 			}
-			for (SearchNode sn : duplicates) {
+			for (SearchNode sn : duplicates) {  //Remove duplicates for efficiency
 				open.remove(sn);
 			}
+			//current = open.get(open.size()-1); //DFS act like a stack, LIFO
 
 			if (current.getBoard().equals(goalBoard)) {   //check if node is goal
 				System.out.println("Found the goal");
 				return path(path, current);
 			}
 			open.remove(current); closed.add(current);
-			if (current.getChildren().isEmpty()) {
+			if (current.getChildren().isEmpty()) { //Don't generate children if they are already generated
 				current.generateChildren();
 			}
 
@@ -64,14 +64,13 @@ public class AStar{
 				int tentative_f = heuristicCostEstimate(child, goalBoard);
 
 				if (closed.contains(child)) {
-					//Duplicate child
-					//System.out.println("Duplicate child");
+					//Duplicate child is already checked, can be ignored
 					continue;
 				}
 				if (!open.contains(child)) {
-					//System.out.println("Will add child");
+					//This is an accepted child
 					generatedNodes++;
-					path.put(child, current);
+					path.put(child, current); //Save the parent
 					child.g = tentative_g;
 					child.f = tentative_f;
 					open.add(child);
@@ -82,6 +81,8 @@ public class AStar{
 	}
 
 	public int heuristicCostEstimate(SearchNode start, ArrayList<String> goalBoard) {
+		//Evaluate similarity to goalBoard
+		//Traverse board. For each misplaced piece, add 1 + the distance to correct place to the result
 		int middleIndex = (int) Math.floor(goalBoard.size()/2);
 		ArrayList<String> currentBoard = start.getBoard();
 		int result = 0;
@@ -98,18 +99,16 @@ public class AStar{
 			}
 		}
 		return result;
-		//return 0;
-		//return 5;
+		//return 0; For DFS, BFS
 	}
 
 	public String path(HashMap<SearchNode, SearchNode> currentPath, SearchNode goal){
-		if (currentPath.containsKey(goal)) {
+		if (currentPath.containsKey(goal)) { //If the HashMap of parents has the goal as a key, it knows the goals parent
 			String parentPath = path(currentPath, currentPath.get(goal));
-			pathLength += 1;
-			return parentPath + "\n" + goal.getBoard();
+			return parentPath + "\n" + goal.getBoard(); //Recursive call to add full path
 		}
-		else {
-			return pathLength + "\n" + goal.getBoard().toString();
+		else {  //If there is no parent, this is the top node
+			return "\n" + goal.getBoard().toString();
 		}
 	}
 
