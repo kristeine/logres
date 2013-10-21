@@ -1,6 +1,8 @@
 package Oving4;
 
 
+import java.util.ArrayList;
+
 /**
  * Created with IntelliJ IDEA.
  * User: kristine
@@ -68,23 +70,26 @@ public class Node {
 		return points;
 	}
 	
-	public void move() {
+	public ArrayList<Node> move() {
+		ArrayList<Node> kids = new ArrayList<Node>();
 		// For each threatened egg:
 		for(int i = 0; i < board.length; i++) {
 			for(int j = 0; j < board[i].length; j++) {
 				if((board[i][j] == 1) && isThreatened(i, j)) {
-					for(int l = 0; l < width; l++) { //width-k funker ikke, for m� jo finne de som er possible
+					for(int l = 0; l < width; l++) {
 						if(board[i][l] == 0) {
 							//MAKE board[i][l] A NEIGHBOUR
-							
-							/*Sjekka med Sysout, og den g�r hit 10 ganger, noe som er riktig ettersom det er 10 brikker
-							 *og alle er truet i initial
-							 */
+							Node kid = new Node(false, width, k);
+							kid.board = this.board;
+							kid.board[i][j] = 0;
+							kid.board[i][l] = 1;
+							kids.add(kid);
 						}
 					}
 				}
 			}
 		}
+		return kids;
 	}
 
 	public boolean isThreatened(int i, int j){
