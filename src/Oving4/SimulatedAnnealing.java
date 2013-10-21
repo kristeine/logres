@@ -22,6 +22,7 @@ public class SimulatedAnnealing {
 
 	public void simulate() {
 		// General algorithm
+		int fCurrent = top.objectiveFunction();
 		
 		//TORKJEL TESTER
 		

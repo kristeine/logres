@@ -59,10 +59,11 @@ public class Node {
 				points++;
 		}
 		// Run eggsOnDiagonal to the right for each in first row and column except last index
-		for (int i = 0; i < width; i++) {
+		for (int i = 0; i < width-1; i++) {
 			int j = eggsOnDiagonal(i, 0, true);
 			int l = eggsOnDiagonal(0, i, true);
 			int m = eggsOnDiagonal(i, 0, false);
+			if (i < 1) {m = 0;}
 			int n = eggsOnDiagonal(width-1, i, false);
 			points += j + l + m + n;
 		}
