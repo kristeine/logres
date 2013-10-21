@@ -45,10 +45,10 @@ public class Node {
 		int numberInColumn;
 		int numberInDiagonal;
 		
-		for(int i = 0; i<board[0].length; i++) {
+		for(int i = 0; i< width; i++) {  // For each column
+			// Checking columns
 			numberInColumn = 0;
-			for(int j = 0; j<board.length; j++) {
-				//Column
+			for(int j = 0; j< width; j++) {  //For each row in the column
 				if(board[j][i] == 1){
 					numberInColumn++;
 				}
@@ -57,17 +57,40 @@ public class Node {
 				points += 2;
 			else if(numberInColumn < k)
 				points++;
-			
-			for(int l = 0; l<board.length; l++) {
-				
-			}
-			for(int j = 0; j < width; j++) {
-				for(int n = 0; n < width; n++) {
-					System.out.println(board[j+1][n+1]);
-				}
-			}
+		}
+		// Run eggsOnDiagonal to the right for each in first row and column except last index
+		for (int i = 0; i < width; i++) {
+			int j = eggsOnDiagonal(i, 0, true);
+			int l = eggsOnDiagonal(0, i, true);
+			int m = eggsOnDiagonal(i, 0, false);
+			int n = eggsOnDiagonal(width-1, i, false);
+			points += j + l + m + n;
 		}
 		return points;
+	}
+
+	public int eggsOnDiagonal(int i, int j, boolean pointingRight) {
+		// Count eggs on the diagonal starting on board[i][j]
+		int numberInDiagonal = 0;
+		while (i<width && j < width && pointingRight) {
+			if (board[i][j] == 1) {
+				numberInDiagonal++;
+			}
+			i++;
+			j++;
+		}
+		while (i >= 0 && j >= 0 && !pointingRight) {
+			if (board[i][j] == 1) {
+				numberInDiagonal++;
+			}
+			i--;
+			j--;
+		}
+		// Evaluate points for the objectiveFunction
+		if (numberInDiagonal <= k) {
+			return 1;
+		}
+		return 0;
 	}
 	
 	public ArrayList<Node> move() {
