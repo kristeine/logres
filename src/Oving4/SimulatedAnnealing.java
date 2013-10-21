@@ -22,5 +22,9 @@ public class SimulatedAnnealing {
 
 	public void simulate() {
 		// General algorithm
+		
+		//TORKJEL TESTER
+		
+		//TORKJEL FERDIG MED TEST
 	}
 }
