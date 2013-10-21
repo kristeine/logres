@@ -11,5 +11,16 @@ public class SimulatedAnnealing {
 	// Objective function
 	// Acceptance probability function
 	// General algorithm
-	//
+	Node top = new Node(true, 2);
+	int temperature = 100; //tmax
+	int delta = 1;
+
+	public static void main (String[] args) {
+		SimulatedAnnealing sa = new SimulatedAnnealing();
+		sa.simulate();
+	}
+
+	public void simulate() {
+
+	}
 }
