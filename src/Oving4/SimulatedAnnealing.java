@@ -10,8 +10,8 @@ package Oving4;
 public class SimulatedAnnealing {
 	// Objective function
 	// Acceptance probability function
-	// General algorithm
-	Node top = new Node(true, 2);
+
+	Node top = new Node(true, 5, 2);
 	int temperature = 100; //tmax
 	int delta = 1;
 
@@ -21,6 +21,6 @@ public class SimulatedAnnealing {
 	}
 
 	public void simulate() {
-
+		// General algorithm
 	}
 }

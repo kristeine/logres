@@ -1,7 +1,5 @@
 package Oving4;
 
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
