@@ -11,7 +11,7 @@ public class SimulatedAnnealing {
 	// Objective function
 	// Acceptance probability function
 
-	Node top = new Node(true, 5, 2);
+	Node top;
 	int temperature = 100; //tmax
 	int delta = 1;
 
@@ -21,9 +21,16 @@ public class SimulatedAnnealing {
 	}
 
 	public void simulate() {
+		int m = 5;
+		int k = 2;
+		top = new Node(true, m, k);
 		// General algorithm
 		int fCurrent = top.objectiveFunction();
-		
+		int target = 2*m + (2*((m-1)+(m-2)));
+		/* if (fCurrent >= target) {
+			System.out.println("This is the solution!");
+		}  */
+
 		//TORKJEL TESTER
 		
 		//TORKJEL FERDIG MED TEST
