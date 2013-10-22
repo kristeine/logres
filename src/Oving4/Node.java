@@ -131,9 +131,7 @@ public class Node {
 		return kids;
 	}
 
-	public boolean isThreatened(int i, int j){
-		//THE UGLIEST WALL OF TRY-CATCH INC!
-		
+	public boolean isThreatened(int i, int j){		
 		// Check if that position is threatened
 		// I.e: whether there are x > k eggs on this position's row or column or diagonal
 		int rowCollidingEggs = 0;
