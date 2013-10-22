@@ -119,8 +119,6 @@ public class Node {
 	}
 
 	public boolean isThreatened(int i, int j){
-		//THE UGLIEST WALL OF TRY-CATCH INC!
-		
 		// Check if that position is threatened
 		// I.e: whether there are x > k eggs on this position's row or column or diagonal
 		int rowCollidingEggs = 0;
@@ -174,9 +172,8 @@ public class Node {
 			
 		}
 
-		//endret > til >= ettersom collidingEggs er egg som er der I TILLEGG til det vi allerede vet at er der!
 		if(rowCollidingEggs >= this.k || columnCollidingEggs >= k || diagCollidingEggs >= k)
-				return true;
+				return true;   // If there are k or more eggs colliding with the given egg, the egg is threatened
 		return false;
 	}
 	public boolean equals(Node other) {

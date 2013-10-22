@@ -36,7 +36,6 @@ public class SimulatedAnnealing {
 			fCurrent = top.objectiveFunction();
 			if (fCurrent >= target) {
 				System.out.println("A solution was found!");
-				System.out.println("Points: "+fCurrent);
 				break;
 			}
 			
@@ -52,24 +51,18 @@ public class SimulatedAnnealing {
 			double q = (kidMaxObjFun - topObjFun) / (topObjFun);
 			double p = Math.min(1, Math.pow(Math.E, -q/temperature));
 
-			System.out.println("q: " + q);
-			System.out.println("Toppen av q: " + (kidMax.objectiveFunction() - top.objectiveFunction()));
-			System.out.println("Bunnen av q: " + (top.objectiveFunction()));
-			System.out.println("e^(-q/t): " + Math.pow(Math.E, -q/temperature));
 			Random rnd = new Random();
 			float x = rnd.nextFloat();
 			
 			if(x > p) {
-				System.out.println("top = kidMax");
 				top = kidMax;
 			} else {
-				System.out.println("top = random kid");
 				int h = (int)(Math.random()*kids.size());
 				top = kids.get(h);
 			}
 			temperature = temperature - delta;
 			if(temperature <= 0) {
-				System.out.println("Temperature reached 0. Lame solution:");
+				System.out.println("Temperature reached 0");
 				break;
 			}
 		}
