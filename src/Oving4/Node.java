@@ -2,7 +2,6 @@ package Oving4;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +14,6 @@ public class Node {
 	int[][] board;
 	int k;
 	int width;
-	// Neighbour generation
 	ArrayList<Node> kids = new ArrayList<Node>();
 
 	public Node(boolean initial, int width, int k) {
@@ -62,7 +60,10 @@ public class Node {
 			int j = eggsOnDiagonal(i, 0, true);
 			int l = eggsOnDiagonal(0, i, true);
 			int m = eggsOnDiagonal(i, 0, false);
-			if (i < 1) {m = 0;}
+			if (i == 0) {
+				l = 0; // Or else we will count the rightbound diagonal from 0,0 twice
+				m = 0; // Don't count edges
+			}
 			int n = eggsOnDiagonal(width-1, i, false);
 			points += j + l + m + n;
 		}
@@ -73,21 +74,20 @@ public class Node {
 	public int eggsOnDiagonal(int i, int j, boolean pointingRight) {
 		// Count eggs on the diagonal starting on board[i][j]
 		int numberInDiagonal = 0;
-		while (i<width && j < width && pointingRight) {
+		while (i < width && j < width && pointingRight) {
 			if (board[i][j] == 1) {
 				numberInDiagonal++;
 			}
 			i++;
 			j++;
 		}
-		while (i >= 0 && j >= 0 && !pointingRight) {
+		while (i >= 0 && j < width && !pointingRight) {
 			if (board[i][j] == 1) {
 				numberInDiagonal++;
 			}
 			i--;
-			j--;
+			j++;
 		}
-		// Evaluate points for the objectiveFunction
 		if (numberInDiagonal <= k) {
 			return 1;
 		}
@@ -102,27 +102,14 @@ public class Node {
 					for(int l = 0; l < width; l++) {
 						if(board[i][l] == 0) {
 							Node kid = new Node(false, width, k);
-							//kid.board = this.board;
-							//TESTER DEEP COPY... edit: funka <3 nå er det bare objectiveFunction som er feil tror jeg
-							// eller nei, det er vel isThreatened som er feil... fiksa nå! Kommenterte fixen i metoden sjølve
 							for(int a = 0; a<width; a++) {
 								for(int b = 0; b<width; b++){
 									kid.board[a][b] = this.board[a][b];
 								}
 							}
-							//-----------------------------
 							kid.board[i][j] = 0;
 							kid.board[i][l] = 1;
 							kids.add(kid);
-							/*//--------------------DEBUG-------------------------------
-							for(int q = 0; q < kid.board.length; q++) {
-								for(int w = 0; w < kid.board.length; w++) {
-									System.out.print(kid.board[q][w] + ", ");
-								}
-								System.out.println();
-							}
-							System.out.println("-----------BOARD END----------------");
-							//---------------------------------------------------------*/
 						}
 					}
 				}
