@@ -2,6 +2,7 @@ package Oving4;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,6 +16,7 @@ public class Node {
 	int k;
 	int width;
 	// Neighbour generation
+	ArrayList<Node> kids = new ArrayList<Node>();
 
 	public Node(boolean initial, int width, int k) {
 		this.k = k;
@@ -31,7 +33,6 @@ public class Node {
 					board[i][l] = 0;
 				}
 			}
-			move();
 		}
 		else {
 			// Create board with width
@@ -43,8 +44,6 @@ public class Node {
 		int points = 0;
 		
 		int numberInColumn;
-		int numberInDiagonal;
-		
 		for(int i = 0; i< width; i++) {  // For each column
 			// Checking columns
 			numberInColumn = 0;
@@ -67,6 +66,7 @@ public class Node {
 			int n = eggsOnDiagonal(width-1, i, false);
 			points += j + l + m + n;
 		}
+
 		return points;
 	}
 
@@ -95,19 +95,34 @@ public class Node {
 	}
 	
 	public ArrayList<Node> move() {
-		ArrayList<Node> kids = new ArrayList<Node>();
 		// For each threatened egg:
 		for(int i = 0; i < board.length; i++) {
 			for(int j = 0; j < board[i].length; j++) {
 				if((board[i][j] == 1) && isThreatened(i, j)) {
 					for(int l = 0; l < width; l++) {
 						if(board[i][l] == 0) {
-							//MAKE board[i][l] A NEIGHBOUR
 							Node kid = new Node(false, width, k);
-							kid.board = this.board;
+							//kid.board = this.board;
+							//TESTER DEEP COPY... edit: funka <3 nå er det bare objectiveFunction som er feil tror jeg
+							// eller nei, det er vel isThreatened som er feil... fiksa nå! Kommenterte fixen i metoden sjølve
+							for(int a = 0; a<width; a++) {
+								for(int b = 0; b<width; b++){
+									kid.board[a][b] = this.board[a][b];
+								}
+							}
+							//-----------------------------
 							kid.board[i][j] = 0;
 							kid.board[i][l] = 1;
 							kids.add(kid);
+							/*//--------------------DEBUG-------------------------------
+							for(int q = 0; q < kid.board.length; q++) {
+								for(int w = 0; w < kid.board.length; w++) {
+									System.out.print(kid.board[q][w] + ", ");
+								}
+								System.out.println();
+							}
+							System.out.println("-----------BOARD END----------------");
+							//---------------------------------------------------------*/
 						}
 					}
 				}
@@ -127,28 +142,27 @@ public class Node {
 		for(int l = 1; l < (width); l++) {
 			//check row
 			try {
-				if(board[i-l][j] == 1)
+				if(board[i][j-l] == 1)
 					rowCollidingEggs++;
 			} catch(IndexOutOfBoundsException e){
 			}
 			try {
-				if(board[i+l][j] == 1)
+				if(board[i][j+l] == 1)
 					rowCollidingEggs++;
 			} catch(IndexOutOfBoundsException e){
 			}
 			
 			//check columns
 			try {
-				if(board[i][j-l] == 1)
+				if(board[i-l][j] == 1)
 					columnCollidingEggs++;
 			} catch(IndexOutOfBoundsException e){
 			}
 			try {
-				if(board[i][j+l] == 1)
+				if(board[i+l][j] == 1)
 					columnCollidingEggs++;
 			} catch(IndexOutOfBoundsException e){
 			}
-			
 			//check diagonals
 			try {
 				if(board[i-l][j-l] == 1)
@@ -170,9 +184,12 @@ public class Node {
 					diagCollidingEggs++;
 			} catch(IndexOutOfBoundsException e){
 			}
-			if(rowCollidingEggs > this.k || columnCollidingEggs > k || diagCollidingEggs > k)
-				return true;
+			
 		}
+
+		//endret > til >= ettersom collidingEggs er egg som er der I TILLEGG til det vi allerede vet at er der!
+		if(rowCollidingEggs >= this.k || columnCollidingEggs >= k || diagCollidingEggs >= k)
+				return true;
 		return false;
 	}
 	public boolean equals(Node other) {
