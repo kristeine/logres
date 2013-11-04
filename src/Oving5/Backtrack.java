@@ -34,5 +34,12 @@ public class Backtrack {
 		//      select next unassigned queen with the smallest domain
 		//      assign the queen to a column
 		// return solution
+
+		/** see http://prezi.com/nsygbuaubybv/tdt4136-constraint-satisfaction/ */
+	}
+
+	public boolean isFinished(){
+		// if board is complete return true
+		return false;
 	}
 }
