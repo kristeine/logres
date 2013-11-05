@@ -28,6 +28,10 @@ public class Queen {
 		this.column = column;
 	}
 
+	public int getRow() {
+		return row;
+	}
+
 	public boolean threatens(Queen other) {
 		if (this.column == other.column || this.column == other.column - Math.abs(this.row - other.row)
 				|| this.column == other.column + Math.abs(this.row - other.row)) {

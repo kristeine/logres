@@ -18,7 +18,7 @@ public class Backtrack {
 
 	public static void main(String[] args) {
 		ArrayList<Queen> q = new ArrayList<Queen>();
-		q.add(new Queen());
+		q.add(new Queen(0,0));
 		Backtrack b = new Backtrack(q);
 		b.run();
 	}

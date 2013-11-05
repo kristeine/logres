@@ -12,16 +12,17 @@ import java.util.Random;
  */
 public class LocalSearch {
 	private int size;
-	private Integer[][] board;
+	private int[][] board;
 	private Queen[] queens;
 
 	public LocalSearch(int size) {
 		this.size = size;
-		board = new Integer[size][size];
+		board = new int[size][size];
 	}
 
 	public static void main(String[] args) {
 		LocalSearch ls = new LocalSearch(5);
+
 		ls.run();
 	}
 	/** traverse a row
@@ -34,6 +35,10 @@ public class LocalSearch {
 
 	public void run(){
 		queens = new Queen[size];
+		for (int i = 0; i < size; i++) {
+			queens[i] = new Queen(i, i);
+		}
+
 		System.out.println("Evaluating...");
 		System.out.println("Valid queens: ");
 		int totalViolations = size;
@@ -42,9 +47,14 @@ public class LocalSearch {
 			totalViolations = totalViolations();
 			System.out.print(totalViolations + ", ");
 		}
+		makeBoard();
 		System.out.println("\nFound a solution:");
-		printBoard();
-
+		for(int i = 0; i < board.length; i++) {
+			for(int j = 0; j < board.length; j++) {
+				System.out.print(board[i][j] + " ");
+			}
+			System.out.println();
+		}
 	}
 
 	public void moveQueen() {
@@ -69,22 +79,32 @@ public class LocalSearch {
 	}
 
 	public int totalViolations() {
-		// TODO: fix
-		return size;
+		int result = 0;
+		for (int i = 0; i < size; i++) {
+			result += violations(i);
+		}
+		return result;
 	}
 
 	public int violations(int row) {
 		int result = 0;
 		for (int i = 0; i < size; i++) {
-			if (i == row) {continue;}
-			else if (queens[row].threatens(queens[i])) {
+			if (i != row && queens[row].threatens(queens[i])) {
 				result += 1;
 			}
 		}
 		return result;
 	}
 
-	public void printBoard() {
-		// TODO: fix
+	public void makeBoard() {
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				board[i][j] = 0;
+			}
+		}
+		for (Queen q: queens) {
+			board[q.getRow()][q.getColumn()] = 1;
+		}
 	}
+
 }
