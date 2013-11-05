@@ -20,6 +20,14 @@ public class Queen {
 		this.column = column;
 	}
 
+	public int getColumn() {
+		return column;
+	}
+
+	public void setColumn(int column) {
+		this.column = column;
+	}
+
 	public boolean threatens(Queen other) {
 		if (this.column == other.column || this.column == other.column - Math.abs(this.row - other.row)
 				|| this.column == other.column + Math.abs(this.row - other.row)) {
