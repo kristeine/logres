@@ -15,6 +15,11 @@ public class Queen {
 	private Integer[] domain;
 	private Stack<Integer[]> conflicts;
 
+	public Queen(int row, int column) {
+		this.row = row;
+		this.column = column;
+	}
+
 	public boolean threatens(Queen other) {
 		if (this.column == other.column || this.column == other.column - Math.abs(this.row - other.row)
 				|| this.column == other.column + Math.abs(this.row - other.row)) {

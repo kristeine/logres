@@ -26,8 +26,14 @@ public class LocalSearch {
 	}
 
 	public void run(){
+		queens = new Queen[size];
 		Random r = new Random();
-		r.nextInt(size);
+		int row = r.nextInt(size);
+		Integer[] violations = new Integer[size];
+		for (int i = 0; i < size; i++) {
+			queens[row] = new Queen(row, i);
+			violations[i] = violations(row);
+		}
 	}
 
 	// traverse a row
