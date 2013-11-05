@@ -24,13 +24,6 @@ public class LocalSearch {
 
 		ls.run();
 	}
-	/** traverse a row
-	 * place a queen on column i
-	 * evaluate violations for the queen and save the value to an array
-	 * remove the queen and continue to next column
-	 * after traversing find the min-value of the violations array and move the queen there
-	 * don't put the queen in the column it was in unless no other column is as good as it
-	 */
 
 	public void run(){
 		queens = new Queen[size];
@@ -42,12 +35,15 @@ public class LocalSearch {
 		System.out.println("Violations: ");
 		int totalViolations = size;
 		int iterations = 0;
+		/**
+		 * While there are violations, move a queen and reevaluate
+		*/
 		while (totalViolations != 0) {
 			moveQueen();
 			totalViolations = totalViolations();
 			iterations += 1;
 			System.out.print(totalViolations + ", ");
-			if (iterations %30 == 0) {
+			if (iterations % 30 == 0) {
 				System.out.print("\n");
 			}
 		}
@@ -60,6 +56,13 @@ public class LocalSearch {
 			System.out.println();
 		}
 	}
+	/** traverse a row
+	 * place a queen on column i
+	 * evaluate violations for the queen and save the value to an array
+	 * remove the queen and continue to next column
+	 * after traversing find the min-value of the violations array and move the queen there
+	 * don't put the queen in the column it was in unless no other column is as good as it
+	 */
 
 	public void moveQueen() {
 		Random r = new Random();
