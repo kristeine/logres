@@ -14,4 +14,13 @@ public class Queen {
 	private int column;
 	private Integer[] domain;
 	private Stack<Integer[]> conflicts;
+
+	public boolean threatens(Queen other) {
+		if (this.column == other.column || this.column == other.column - Math.abs(this.row - other.row)
+				|| this.column == other.column + Math.abs(this.row - other.row)) {
+			return true;
+		}
+		return false;
+	}
+
 }
