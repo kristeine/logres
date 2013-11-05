@@ -1,6 +1,5 @@
 package Oving5;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -21,7 +20,7 @@ public class LocalSearch {
 	}
 
 	public static void main(String[] args) {
-		LocalSearch ls = new LocalSearch(5);
+		LocalSearch ls = new LocalSearch(16);
 
 		ls.run();
 	}
@@ -40,12 +39,17 @@ public class LocalSearch {
 		}
 
 		System.out.println("Evaluating...");
-		System.out.println("Valid queens: ");
+		System.out.println("Violations: ");
 		int totalViolations = size;
+		int iterations = 0;
 		while (totalViolations != 0) {
 			moveQueen();
 			totalViolations = totalViolations();
+			iterations += 1;
 			System.out.print(totalViolations + ", ");
+			if (iterations %30 == 0) {
+				System.out.print("\n");
+			}
 		}
 		makeBoard();
 		System.out.println("\nFound a solution:");
