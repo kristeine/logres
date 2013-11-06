@@ -1,6 +1,5 @@
 package Oving5;
 
-import java.util.Calendar;
 import java.util.Random;
 
 /**
@@ -21,19 +20,23 @@ public class LocalSearch {
 	}
 
 	public static void main(String[] args) {
-		LocalSearch ls = new LocalSearch(5);
+		LocalSearch ls = new LocalSearch(2000);
 
 		ls.run();
 	}
 
 	public void run(){
+		if (size == 2 || size == 0) {
+			System.out.println("Size is invalid. No solution possible. ");
+			return;
+		}
 		queens = new Queen[size];
 		for (int i = 0; i < size; i++) {
 			queens[i] = new Queen(i, i);
 		}
-		Calendar time = Calendar.getInstance();
-		System.out.println(time.getTime() +"\nEvaluating...");
+		System.out.println("\nEvaluating...");
 		System.out.println("Violations: ");
+		long time = System.currentTimeMillis();
 		int totalViolations = size;
 		int iterations = 0;
 		/**
@@ -48,14 +51,15 @@ public class LocalSearch {
 				System.out.print("\n");
 			}
 		}
+		long timeSpent = System.currentTimeMillis() - time;
 		makeBoard();
-		System.out.println("\n" + time.getTime() + "\nFound a solution:");
-		for(int i = 0; i < board.length; i++) {
+		System.out.println("\n\nFound a solution after "+timeSpent+" ms:");
+		/**for(int i = 0; i < board.length; i++) {
 			for(int j = 0; j < board.length; j++) {
 				System.out.print(board[i][j] + " ");
 			}
 			System.out.println();
-		}
+		}  */
 	}
 	/** traverse a row
 	 * place a queen on column i
